@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?fqrxk5');
-  src:  url('fonts/icomoon.eot?fqrxk5#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?fqrxk5') format('truetype'),
-    url('fonts/icomoon.woff?fqrxk5') format('woff'),
-    url('fonts/icomoon.svg?fqrxk5#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?6jbno2');
+  src:  url('fonts/icomoon.eot?6jbno2#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?6jbno2') format('truetype'),
+    url('fonts/icomoon.woff?6jbno2') format('woff'),
+    url('fonts/icomoon.svg?6jbno2#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,26 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-delete:before {
+  content: "\e907";
+  color: #e8eaed;
+}
+.icon-download:before {
+  content: "\e908";
+  color: #e8eaed;
+}
+.icon-share:before {
+  content: "\e909";
+  color: #e8eaed;
+}
+.icon-more:before {
+  content: "\e906";
+  color: #e8eaed;
+}
+.icon-Upload:before {
+  content: "\e905";
+  color: #fff;
+}
 .icon-eye-invisible:before {
   content: "\e903";
   color: #e8eaed;

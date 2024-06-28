@@ -4,7 +4,7 @@ export interface IconPropertiesI {
   multiPath?: {
     containerClass: string;
     size: string;
-    paths: { class: string }[];
+    paths: { class: string; color?: string }[];
   };
   class?: string;
   size?: string;

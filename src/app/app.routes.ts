@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginPageComponent } from './components/login-page/login-page.component';
-import { VerifyEmailPageComponent } from './components/verify-email-page/verify-email-page.component';
 import { CreateAccountComponent } from './components/create-account/create-account.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { VerifyEmailPageComponent } from './components/verify-email-page/verify-email-page.component';
 
 export const routes: Routes = [
   {
@@ -20,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'verifyEmail',
     component: VerifyEmailPageComponent,
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
   },
 ];

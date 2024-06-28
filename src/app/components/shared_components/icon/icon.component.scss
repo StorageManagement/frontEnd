@@ -1,5 +1,13 @@
 span {
-  &:before, &:after {
+  &:before,
+  &:after {
     color: inherit;
+  }
+
+  span {
+    &:before,
+    &:after {
+      color: inherit;
+    }
   }
 }

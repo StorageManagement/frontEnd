@@ -1,0 +1,27 @@
+<div class="container">
+  <img src="assets/images/Figma.svg" alt="figma" />
+  <div class="information">
+    <h3>App School.fig</h3>
+    <h5>10 GB - 10:09pm, 10 Oct</h5>
+  </div>
+  <app-button
+    [buttonProperties]="optionsButtonProperties"
+    nz-popover
+    nzPopoverPlacement="right"
+    [(nzPopoverVisible)]="visible"
+    [nzPopoverContent]="contentTemplate"
+    (click)="clickMe()"
+    nzPopoverTitle="App School.fig"
+    (nzPopoverVisibleChange)="change($event)"
+    nzPopoverTrigger="click"
+  ></app-button>
+</div>
+<ng-template #contentTemplate>
+  <div class="template-container">
+    <app-button [buttonProperties]="shareButtonProperties"></app-button>
+    <nz-divider></nz-divider>
+    <app-button [buttonProperties]="downloadButtonProperties"></app-button>
+    <nz-divider></nz-divider>
+    <app-button [buttonProperties]="deleteButtonProperties"></app-button>
+  </div>
+</ng-template>
