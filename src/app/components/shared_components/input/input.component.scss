@@ -4,7 +4,7 @@
   position: relative;
 
   .input {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 
     display: block;
 
@@ -56,11 +56,19 @@
     transition: 0.2s ease all;
     transition-delay: calc(var(--index) * 0.05s);
   }
+
+  .icon {
+    position: absolute;
+    right: 2%;
+    bottom: 5%;
+
+    cursor: pointer;
+  }
 }
 
 .wave-group .input:focus ~ label .label-char,
 .wave-group .input:valid ~ label .label-char {
-  transform: translateY(-20px);
+  transform: translateY(-2.5rem);
   font-size: 14px;
   color: var(--primary-color);
 }

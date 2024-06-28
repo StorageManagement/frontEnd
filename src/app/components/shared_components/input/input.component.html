@@ -1,0 +1,62 @@
+<ng-container *ngIf="textInputProperties?.type == 'text'; else password">
+  <div class="wave-group">
+    <input
+      [placeholder]="textInputProperties?.placeholder ?? ''"
+      [ngModel]="value"
+      (ngModelChange)="valueChange.emit($event)"
+      required
+      [type]="textInputProperties?.type ?? 'text'"
+      class="input"
+    />
+    <span class="bar"></span>
+    <label class="label">
+      <span
+        *ngFor="let nameLetter of nameArray ?? ''"
+        class="label-char"
+        [ngStyle]="{ '--index': nameLetter.index }"
+        ><ng-container *ngIf="nameLetter.letter !== ' '">{{
+          nameLetter.letter
+        }}</ng-container>
+        <ng-container *ngIf="nameLetter.letter == ' '">
+          {{ "&nbsp;" }}
+        </ng-container>
+      </span>
+    </label>
+  </div>
+</ng-container>
+
+<ng-template #password>
+  <div class="wave-group">
+    <input
+      [placeholder]="textInputProperties?.placeholder ?? ''"
+      [ngModel]="value"
+      (ngModelChange)="valueChange.emit($event)"
+      required
+      [type]="passwordVisible ? 'text' : textInputProperties?.type"
+      class="input"
+    />
+    <span class="bar"></span>
+    <label class="label">
+      <span
+        *ngFor="let nameLetter of nameArray ?? ''"
+        class="label-char"
+        [ngStyle]="{ '--index': nameLetter.index }"
+        ><ng-container *ngIf="nameLetter.letter !== ' '">{{
+          nameLetter.letter
+        }}</ng-container>
+        <ng-container *ngIf="nameLetter.letter == ' '">
+          {{ "&nbsp;" }}
+        </ng-container>
+      </span>
+    </label>
+    <app-icon
+      [iconProperties]="{
+        class: passwordVisible ? 'icon-eye' : 'icon-eye-invisible',
+        size: '2rem',
+        color: 'var(--primary-color)',
+      }"
+      (click)="passwordVisible = !passwordVisible"
+      class="icon"
+    ></app-icon>
+  </div>
+</ng-template>

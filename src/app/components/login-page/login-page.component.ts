@@ -6,7 +6,7 @@ import {
 import {
   InputComponent,
   TextInputPropertiesI,
-} from '../shared_components/text-input/input.component';
+} from '../shared_components/input/input.component';
 import { ButtonComponent } from '../shared_components/button/button.component';
 import { ButtonPropertiesI } from '../shared_components/button/models/button-properties';
 import { animate, style, transition, trigger } from '@angular/animations';
