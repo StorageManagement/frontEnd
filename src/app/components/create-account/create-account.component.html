@@ -8,7 +8,7 @@
     </h5>
     <img src="assets/images/Illustration.svg" alt="image" />
   </div>
-  <div class="login-container">
+  <div class="create-account-container">
     <div *ngIf="!urlChange" class="description" @welcomeAnimation>
       <h1>Create Account</h1>
       <div *ngIf="isError" @errorAnimation class="error">Passwords do not match</div>
@@ -35,7 +35,6 @@
     <div *ngIf="!urlChange" class="buttons" @buttonAnimation>
       <app-button [buttonProperties]="submitButtonProperties" (click)="onSubmitClicked()"></app-button>
       <h4>Already have an account? <a (click)="onLoginClicked()">Login</a></h4>
-
     </div>
   </div>
 </div>
