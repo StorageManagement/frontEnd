@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="description-container">
+    <app-icon [iconProperties]="logoIcon"></app-icon>
+    <h1>Manage your files the best way</h1>
+    <h5>
+      Awesome, we've created the perfect place for you to store all your
+      documents.
+    </h5>
+    <img src="assets/images/Illustration.svg" alt="image" />
+  </div>
+  <div class="login-container">
+    <div *ngIf="!urlChange" class="description" @welcomeAnimation>
+      <h1>Create Account</h1>
+      <div *ngIf="isError" @errorAnimation class="error">Passwords do not match</div>
+
+    </div>
+    <div *ngIf="!urlChange" class="inputs" @inputAnimation>
+      <app-text-input
+        [textInputProperties]="usernameInputProperties"
+        [(value)]="formValues.username"
+      ></app-text-input>
+      <app-text-input
+        [textInputProperties]="emailInputProperties"
+        [(value)]="formValues.email"
+      ></app-text-input>
+      <app-text-input
+        [textInputProperties]="passwordInputProperties"
+        [(value)]="formValues.password"
+      ></app-text-input>
+      <app-text-input
+        [textInputProperties]="confirmPasswordInputProperties"
+        [(value)]="formValues.confirmPassword"
+      ></app-text-input>
+    </div>
+    <div *ngIf="!urlChange" class="buttons" @buttonAnimation>
+      <app-button [buttonProperties]="submitButtonProperties" (click)="onSubmitClicked()"></app-button>
+      <h4>Already have an account? <a (click)="onLoginClicked()">Login</a></h4>
+
+    </div>
+  </div>
+</div>

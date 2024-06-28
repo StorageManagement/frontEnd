@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ButtonComponent } from '../shared_components/button/button.component';
 import {
   IconComponent,
   IconPropertiesI,
@@ -7,19 +8,18 @@ import {
   InputComponent,
   TextInputPropertiesI,
 } from '../shared_components/input/input.component';
-import { ButtonComponent } from '../shared_components/button/button.component';
 import { ButtonPropertiesI } from '../shared_components/button/models/button-properties';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
-import { delay } from 'rxjs';
 import { NgIf } from '@angular/common';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'app-create-account',
   standalone: true,
-  imports: [IconComponent, InputComponent, ButtonComponent, NgIf],
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.scss'],
+  imports: [ButtonComponent, IconComponent, InputComponent, NgIf],
+  templateUrl: './create-account.component.html',
+  styleUrl: './create-account.component.scss',
   animations: [
     trigger('welcomeAnimation', [
       transition(':enter', [
@@ -51,9 +51,19 @@ import { NgIf } from '@angular/common';
         animate('500ms ease-in-out', style({ opacity: 0 })),
       ]),
     ]),
+    trigger('errorAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms ease-in-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('500ms ease-in-out', style({ opacity: 0 })),
+      ]),
+    ]),
   ],
 })
-export class LoginPageComponent {
+export class CreateAccountComponent {
   protected logoIcon: IconPropertiesI = {
     multiPath: {
       containerClass: 'icon-logo',
@@ -72,8 +82,13 @@ export class LoginPageComponent {
     },
   };
 
-  protected usernameEmailInputProperties: TextInputPropertiesI = {
-    name: 'Username or Email',
+  protected usernameInputProperties: TextInputPropertiesI = {
+    name: 'Username',
+    placeholder: '',
+    type: 'text',
+  };
+  protected emailInputProperties: TextInputPropertiesI = {
+    name: 'Email',
     placeholder: '',
     type: 'text',
   };
@@ -82,17 +97,39 @@ export class LoginPageComponent {
     placeholder: '',
     type: 'password',
   };
+  protected confirmPasswordInputProperties: TextInputPropertiesI = {
+    name: 'Confirm Password',
+    placeholder: '',
+    type: 'password',
+  };
   protected submitButtonProperties: ButtonPropertiesI = {
     type: 'primary',
-    text: 'Login',
+    text: 'Create Account',
     color: 'var(--white-color)',
   };
 
   protected urlChange: boolean = false;
-  public constructor(private router: Router) {}
-  protected async onCreateAccountClicked(): Promise<void> {
+
+  protected formValues = {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+
+  protected isError: boolean = false;
+  public constructor(
+    private router: Router,
+    private notification: NzNotificationService,
+  ) {}
+
+  protected async onLoginClicked(): Promise<void> {
     this.urlChange = true;
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    await this.router.navigateByUrl('/createAccount');
+    await this.router.navigateByUrl('/login');
+  }
+
+  protected onSubmitClicked(): void {
+    this.isError = this.formValues.password !== this.formValues.confirmPassword;
   }
 }
