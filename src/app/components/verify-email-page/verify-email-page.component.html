@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="description-container">
+    <app-icon [iconProperties]="logoIcon"></app-icon>
+    <h1>Manage your files the best way</h1>
+    <h5>
+      Awesome, we've created the perfect place for you to store all your
+      documents.
+    </h5>
+    <img src="assets/images/Illustration.svg" alt="image" />
+  </div>
+  <div class="verify-email-container">
+  <h1 *ngIf="!urlChange" @titleAnimation>Check your email</h1>
+    <img *ngIf="!urlChange" @descriptionAnimation src="assets/images/Illustration%20(1).svg" alt="image1" />
+    <p *ngIf="!urlChange" @descriptionAnimation >We've sent an email to <a>{{email}}</a> to verify your account.</p>
+    <app-button *ngIf="!urlChange" @buttonAnimation [buttonProperties]='submitButtonProperties'></app-button>
+  </div>
+</div>
