@@ -1,0 +1,29 @@
+<button
+  [ngStyle]="{
+    fontSize: buttonProperties?.fontSize,
+    fontWeight: buttonProperties?.fontWeight,
+    width: buttonProperties?.width,
+    height: buttonProperties?.height,
+    borderRadius: buttonProperties?.borderRadius,
+    color: buttonProperties?.color,
+    backgroundColor: buttonProperties?.backgroundColor,
+    borderColor: buttonProperties?.borderColor,
+  }"
+  [ngClass]="{
+    'text-type': buttonProperties.type == 'text',
+    'bordered-type': buttonProperties.type == 'bordered',
+    'primary-type': buttonProperties.type == 'primary',
+  }"
+>
+  <ng-container *ngIf="buttonProperties.link?.enable; else withoutLink">
+    <a [href]="buttonProperties?.link?.url">
+      {{ buttonProperties.text }}
+    </a>
+  </ng-container>
+  <ng-container *ngIf="buttonProperties.icon">
+    <app-icon [iconProperties]="buttonProperties.icon"></app-icon>
+  </ng-container>
+  <ng-template #withoutLink>
+    <span> {{ buttonProperties.text }} </span>
+  </ng-template>
+</button>

@@ -1,0 +1,22 @@
+<ng-container *ngIf="iconProperties.multiPath; else singlePath">
+  <span
+    [class]="iconProperties.multiPath.containerClass"
+    [ngStyle]="{
+      fontSize: iconProperties.multiPath.size,
+    }"
+  >
+    <span
+      *ngFor="let path of iconProperties.multiPath.paths"
+      [class]="path.class"
+    ></span>
+  </span>
+</ng-container>
+<ng-template #singlePath>
+  <span
+    [class]="iconProperties.class"
+    [ngStyle]="{
+      fontSize: iconProperties.size,
+      backgroundColor: iconProperties.color,
+    }"
+  ></span>
+</ng-template>
