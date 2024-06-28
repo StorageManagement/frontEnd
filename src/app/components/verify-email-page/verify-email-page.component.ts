@@ -60,12 +60,15 @@ export class VerifyEmailPageComponent {
       paths: [
         {
           class: 'path1',
+          color: 'var(--white-color)',
         },
         {
           class: 'path2',
+          color: 'var(--white-color)',
         },
         {
           class: 'path3',
+          color: 'var(--white-color)',
         },
       ],
     },

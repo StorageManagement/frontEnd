@@ -1,8 +1,8 @@
 button {
-  width: inherit;
+  width: 100%;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   padding-inline: 1rem;
@@ -24,6 +24,10 @@ button {
   }
   span {
     color: inherit;
+  }
+
+  app-icon {
+    margin-top: 0.4rem;
   }
 }
 
