@@ -4,6 +4,7 @@ import { CreateAccountComponent } from './components/create-account/create-accou
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { VerifyEmailPageComponent } from './components/verify-email-page/verify-email-page.component';
 import { AuthGaurdService } from './services/auth-gaurd.service';
+import { AccessNotGrantedComponent } from './components/access-not-granted/access-not-granted.component';
 
 export const routes: Routes = [
   {
@@ -27,5 +28,9 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGaurdService],
+  },
+  {
+    path: 'unAuthorized',
+    component: AccessNotGrantedComponent,
   },
 ];
