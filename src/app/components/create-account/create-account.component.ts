@@ -16,6 +16,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { LogoComponent } from '../shared_components/logo/logo.component';
 import { CreateAccountApiService } from './services/create-account-api.service';
 import { VerifyEmailService } from '../verify-email-page/services/verify-email.service';
+import { LoadingService } from '../loading/services/loading.service';
 export interface CreateAccountFormDataI {
   username: string;
   email: string;
@@ -127,6 +128,7 @@ export class CreateAccountComponent {
     private router: Router,
     private createAccountApiService: CreateAccountApiService,
     private verifyEmailService: VerifyEmailService,
+    private loadingService: LoadingService,
   ) {}
 
   protected async onLoginClicked(): Promise<void> {
@@ -142,6 +144,7 @@ export class CreateAccountComponent {
         .createAccount(this.formValues)
         .subscribe(async (response) => {
           if (response.detail === 'Verification email sent.') {
+            this.loadingService.hide();
             this.urlChange = true;
             this.verifyEmailService.email = this.formValues.email;
             await new Promise((resolve) => setTimeout(resolve, 1500));

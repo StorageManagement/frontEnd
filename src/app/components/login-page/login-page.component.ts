@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { LogoComponent } from '../shared_components/logo/logo.component';
 import { AuthenticationService } from './services/authentication.service';
+import { LoadingService } from '../loading/services/loading.service';
 
 export interface LoginFormDataI {
   username_email: string;
@@ -94,6 +95,7 @@ export class LoginPageComponent {
   public constructor(
     private router: Router,
     private authentication: AuthenticationService,
+    private loadingService: LoadingService,
   ) {}
 
   protected async onCreateAccountClicked(): Promise<void> {
@@ -115,6 +117,7 @@ export class LoginPageComponent {
         }
       });
     this.authentication.isAuthenticated.subscribe(async (value) => {
+      this.loadingService.hide();
       if (value) {
         this.urlChange = true;
         this.enterDashboard = true;
