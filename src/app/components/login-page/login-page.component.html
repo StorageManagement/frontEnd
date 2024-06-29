@@ -1,13 +1,5 @@
 <div class="container">
-  <div class="description-container">
-    <app-icon [iconProperties]="logoIcon"></app-icon>
-    <h1>Manage your files the best way</h1>
-    <h5>
-      Awesome, we've created the perfect place for you to store all your
-      documents.
-    </h5>
-    <img src="assets/images/Illustration.svg" alt="image" />
-  </div>
+  <app-logo *ngIf="!enterDashboard" @logoAnimation></app-logo>
   <form class="login-container">
     <div *ngIf="!urlChange"  class="description" @welcomeAnimation>
       <h1>Welcome</h1>
@@ -22,7 +14,7 @@
       ></app-text-input>
     </div>
     <div *ngIf="!urlChange"  class="buttons" @buttonAnimation>
-      <app-button [buttonProperties]="submitButtonProperties"></app-button>
+      <app-button [buttonProperties]="submitButtonProperties" (click)="onLoginClicked()"></app-button>
       <h4>
         Don't have an account?
         <a (click)="onCreateAccountClicked()">Create Account</a>

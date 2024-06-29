@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="header">
+  <div @headerAnimation class="header">
     <app-icon [iconProperties]="logoIcon"></app-icon>
     <app-search-box></app-search-box>
 
@@ -14,62 +14,13 @@
       </div>
     </div>
   </div>
-  <div class="content">
+  <div @contentAnimation class="content">
     <h1>Objects</h1>
     <h4>Total: 12GB</h4>
 
     <div class="items">
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
-      <app-object></app-object>
+      <app-object *ngFor="let item of forLoop"></app-object>
     </div>
+    <nz-pagination [nzPageIndex]="1" [nzPageSize]="25" [nzTotal]="50"></nz-pagination>
   </div>
 </div>

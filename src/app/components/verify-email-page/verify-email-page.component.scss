@@ -6,6 +6,11 @@
   align-items: center;
   justify-content: center;
 
+  app-logo {
+    width: 30%;
+    height: 100%;
+  }
+
   .container {
     width: 90%;
     height: 90%;
@@ -46,7 +51,7 @@
     .verify-email-container {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       gap: 1rem;
       flex: 1;

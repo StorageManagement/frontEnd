@@ -8,6 +8,9 @@ import { ButtonComponent } from '../shared_components/button/button.component';
 import { ButtonPropertiesI } from '../shared_components/button/models/button-properties';
 import { NzAvatarComponent } from 'ng-zorro-antd/avatar';
 import { ObjectComponent } from './object/object.component';
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {NgForOf} from "@angular/common";
+import {NzPaginationComponent} from "ng-zorro-antd/pagination";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,9 +21,26 @@ import { ObjectComponent } from './object/object.component';
     ButtonComponent,
     NzAvatarComponent,
     ObjectComponent,
+    NgForOf,
+    NzPaginationComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  animations: [
+    trigger('headerAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms ease-in-out', style({ opacity: 1 })),
+      ]),
+    ]),
+    trigger('contentAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms 500ms ease-in-out', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
+
 })
 export class DashboardComponent {
   protected logoIcon: IconPropertiesI = {
@@ -52,4 +72,5 @@ export class DashboardComponent {
       class: 'icon-Upload',
     },
   };
+  protected forLoop: number[] = [1,2,3,3,3,3,3,3,3,33,3,3,3,3,33,3,3,3,3,3,33,3,3,3,3,3,3,3]
 }

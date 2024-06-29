@@ -87,8 +87,8 @@
 
         flex: 1;
 
-        max-height: 45rem;
-        overflow: auto;
+        max-height: 70%;
+        overflow: scroll;
 
         padding-block-end: 1rem;
 
@@ -98,6 +98,9 @@
         &::-webkit-scrollbar {
           display: none; /* for Chrome, Safari, and Opera */
         }
+      }
+      nz-pagination {
+        align-self: center;
       }
     }
   }

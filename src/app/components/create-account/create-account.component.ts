@@ -13,11 +13,12 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import {LogoComponent} from "../shared_components/logo/logo.component";
 
 @Component({
   selector: 'app-create-account',
   standalone: true,
-  imports: [ButtonComponent, IconComponent, InputComponent, NgIf],
+  imports: [ButtonComponent, IconComponent, InputComponent, NgIf, LogoComponent],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
   animations: [
@@ -28,7 +29,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
       ]),
       transition(':leave', [
         style({ opacity: 1 }),
-        animate('500ms 1000ms ease-in-out', style({ opacity: 0 })),
+        animate('500ms 1500ms ease-in-out', style({ opacity: 0 })),
       ]),
     ]),
     trigger('inputAnimation', [
@@ -38,7 +39,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
       ]),
       transition(':leave', [
         style({ opacity: 1 }),
-        animate('500ms 500ms ease-in-out', style({ opacity: 0 })),
+        animate('500ms 1000ms ease-in-out', style({ opacity: 0 })),
       ]),
     ]),
     trigger('buttonAnimation', [
@@ -48,13 +49,17 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
       ]),
       transition(':leave', [
         style({ opacity: 1 }),
-        animate('500ms ease-in-out', style({ opacity: 0 })),
+        animate('500ms 500ms ease-in-out', style({ opacity: 0 })),
       ]),
     ]),
     trigger('errorAnimation', [
       transition(':enter', [
         style({ opacity: 0 }),
         animate('500ms ease-in-out', style({ opacity: 1 })),
+        animate('50ms ease-in-out', style({transform: 'translateX(-5px)'})),
+        animate('50ms 50ms ease-in-out', style({transform: 'translateX(5px)'})),
+        animate('50ms 100ms ease-in-out', style({transform: 'translateX(0)'}))
+
       ]),
       transition(':leave', [
         style({ opacity: 1 }),
@@ -64,27 +69,6 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   ],
 })
 export class CreateAccountComponent {
-  protected logoIcon: IconPropertiesI = {
-    multiPath: {
-      containerClass: 'icon-logo',
-      size: '3rem',
-      paths: [
-        {
-          class: 'path1',
-          color: 'var(--white-color)',
-        },
-        {
-          class: 'path2',
-          color: 'var(--white-color)',
-        },
-        {
-          class: 'path3',
-          color: 'var(--white-color)',
-        },
-      ],
-    },
-  };
-
   protected usernameInputProperties: TextInputPropertiesI = {
     name: 'Username',
     placeholder: '',
@@ -134,8 +118,10 @@ export class CreateAccountComponent {
 
   protected async onSubmitClicked(): Promise<void> {
     this.isError = this.formValues.password !== this.formValues.confirmPassword;
-    this.urlChange = true;
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    await this.router.navigateByUrl('/verifyEmail');
+    if (!this.isError) {
+      this.urlChange = true;
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await this.router.navigateByUrl('/verifyEmail');
+    }
   }
 }
