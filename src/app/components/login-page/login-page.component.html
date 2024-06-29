@@ -1,15 +1,17 @@
 <div class="container">
   <app-logo *ngIf="!enterDashboard" @logoAnimation></app-logo>
-  <form class="login-container">
+  <div class="login-container">
     <div *ngIf="!urlChange"  class="description" @welcomeAnimation>
       <h1>Welcome</h1>
       <h2>Login</h2>
     </div>
     <div *ngIf="!urlChange" class="inputs" @inputAnimation>
       <app-text-input
+        [(value)]="loginFormData.username_email"
         [textInputProperties]="usernameEmailInputProperties"
       ></app-text-input>
       <app-text-input
+        [(value)]="loginFormData.password"
         [textInputProperties]="passwordInputProperties"
       ></app-text-input>
     </div>
@@ -20,5 +22,5 @@
         <a (click)="onCreateAccountClicked()">Create Account</a>
       </h4>
     </div>
-  </form>
+  </div>
 </div>
