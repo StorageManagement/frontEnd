@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { VerifyEmailPageComponent } from './components/verify-email-page/verify-email-page.component';
 import { AuthGaurdService } from './services/auth-gaurd.service';
 import { AccessNotGrantedComponent } from './components/access-not-granted/access-not-granted.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 export const routes: Routes = [
   {
