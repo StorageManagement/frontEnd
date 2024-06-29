@@ -1,17 +1,31 @@
-import {Component} from '@angular/core';
-import {IconComponent, IconPropertiesI,} from '../shared_components/icon/icon.component';
-import {InputComponent, TextInputPropertiesI,} from '../shared_components/input/input.component';
-import {ButtonComponent} from '../shared_components/button/button.component';
-import {ButtonPropertiesI} from '../shared_components/button/models/button-properties';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {Router} from '@angular/router';
-import {NgIf} from '@angular/common';
-import {LogoComponent} from "../shared_components/logo/logo.component";
+import { Component } from '@angular/core';
+import { IconComponent } from '../shared_components/icon/icon.component';
+import {
+  InputComponent,
+  TextInputPropertiesI,
+} from '../shared_components/input/input.component';
+import { ButtonComponent } from '../shared_components/button/button.component';
+import { ButtonPropertiesI } from '../shared_components/button/models/button-properties';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { LogoComponent } from '../shared_components/logo/logo.component';
+import { AuthenticationService } from './services/authentication.service';
 
+export interface LoginFormDataI {
+  username_email: string;
+  password: string;
+}
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [IconComponent, InputComponent, ButtonComponent, NgIf, LogoComponent],
+  imports: [
+    IconComponent,
+    InputComponent,
+    ButtonComponent,
+    NgIf,
+    LogoComponent,
+  ],
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss'],
   animations: [
@@ -51,7 +65,6 @@ import {LogoComponent} from "../shared_components/logo/logo.component";
         animate('500ms 1500ms ease-in-out', style({ opacity: 0 })),
       ]),
     ]),
-
   ],
 })
 export class LoginPageComponent {
@@ -72,10 +85,16 @@ export class LoginPageComponent {
   };
 
   protected urlChange: boolean = false;
-  protected enterDashboard:boolean = false;
+  protected enterDashboard: boolean = false;
+  protected loginFormData: LoginFormDataI = {
+    password: '',
+    username_email: '',
+  };
 
-  public constructor(private router: Router) {}
-
+  public constructor(
+    private router: Router,
+    private authentication: AuthenticationService,
+  ) {}
 
   protected async onCreateAccountClicked(): Promise<void> {
     this.urlChange = true;
@@ -84,10 +103,25 @@ export class LoginPageComponent {
   }
 
   protected async onLoginClicked(): Promise<void> {
-    this.urlChange = true;
-    this.enterDashboard = true;
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    await this.router.navigateByUrl('/dashboard');
-    this.enterDashboard = false;
+    this.authentication
+      .authenticate(this.loginFormData)
+      .subscribe(async (res) => {
+        if (res.access && res.refresh) {
+          this.authentication.tokens.next({
+            refresh: res.refresh,
+            access: res.access,
+          });
+          this.authentication.isAuthenticated.next(true);
+        }
+      });
+    this.authentication.isAuthenticated.subscribe(async (value) => {
+      if (value) {
+        this.urlChange = true;
+        this.enterDashboard = true;
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await this.router.navigateByUrl('/dashboard');
+        this.enterDashboard = false;
+      }
+    });
   }
 }

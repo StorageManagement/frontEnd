@@ -13,12 +13,25 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import {LogoComponent} from "../shared_components/logo/logo.component";
-
+import { LogoComponent } from '../shared_components/logo/logo.component';
+import { CreateAccountApiService } from './services/create-account-api.service';
+import { VerifyEmailService } from '../verify-email-page/services/verify-email.service';
+export interface CreateAccountFormDataI {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 @Component({
   selector: 'app-create-account',
   standalone: true,
-  imports: [ButtonComponent, IconComponent, InputComponent, NgIf, LogoComponent],
+  imports: [
+    ButtonComponent,
+    IconComponent,
+    InputComponent,
+    NgIf,
+    LogoComponent,
+  ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
   animations: [
@@ -56,10 +69,15 @@ import {LogoComponent} from "../shared_components/logo/logo.component";
       transition(':enter', [
         style({ opacity: 0 }),
         animate('500ms ease-in-out', style({ opacity: 1 })),
-        animate('50ms ease-in-out', style({transform: 'translateX(-5px)'})),
-        animate('50ms 50ms ease-in-out', style({transform: 'translateX(5px)'})),
-        animate('50ms 100ms ease-in-out', style({transform: 'translateX(0)'}))
-
+        animate('50ms ease-in-out', style({ transform: 'translateX(-5px)' })),
+        animate(
+          '50ms 50ms ease-in-out',
+          style({ transform: 'translateX(5px)' }),
+        ),
+        animate(
+          '50ms 100ms ease-in-out',
+          style({ transform: 'translateX(0)' }),
+        ),
       ]),
       transition(':leave', [
         style({ opacity: 1 }),
@@ -97,7 +115,7 @@ export class CreateAccountComponent {
 
   protected urlChange: boolean = false;
 
-  protected formValues = {
+  protected formValues: CreateAccountFormDataI = {
     username: '',
     email: '',
     password: '',
@@ -107,7 +125,8 @@ export class CreateAccountComponent {
   protected isError: boolean = false;
   public constructor(
     private router: Router,
-    private notification: NzNotificationService,
+    private createAccountApiService: CreateAccountApiService,
+    private verifyEmailService: VerifyEmailService,
   ) {}
 
   protected async onLoginClicked(): Promise<void> {
@@ -119,9 +138,16 @@ export class CreateAccountComponent {
   protected async onSubmitClicked(): Promise<void> {
     this.isError = this.formValues.password !== this.formValues.confirmPassword;
     if (!this.isError) {
-      this.urlChange = true;
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      await this.router.navigateByUrl('/verifyEmail');
+      this.createAccountApiService
+        .createAccount(this.formValues)
+        .subscribe(async (response) => {
+          if (response.detail === 'Verification email sent.') {
+            this.urlChange = true;
+            this.verifyEmailService.email = this.formValues.email;
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            await this.router.navigateByUrl('/verifyEmail');
+          }
+        });
     }
   }
 }
