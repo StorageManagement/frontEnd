@@ -101,9 +101,31 @@
           display: none; /* for Chrome, Safari, and Opera */
         }
       }
+
       nz-pagination {
         padding-top: 1rem;
         align-self: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  :host {
+    .container {
+
+      min-height: min-content;
+
+      .header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .content {
+        justify-content: center;
+        align-items: center;
+
+        height: 60%;
       }
     }
   }

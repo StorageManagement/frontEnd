@@ -22,3 +22,28 @@
     align-self: center;
   }
 }
+
+@media screen and (max-width: 600px){
+  :host {
+    height: min-content;
+  }
+  .description-container {
+    align-items: center;
+    padding-block: 1rem;
+
+    img {
+      width: 10rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    h5 {
+      font-size: 1rem;
+      text-align: center;
+    }
+  }
+
+}
