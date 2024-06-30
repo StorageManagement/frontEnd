@@ -8,9 +8,9 @@
       <div class="avatar">
         <nz-avatar
           nzShape="circle"
-          nzSrc="assets/images/Avatar.svg"
+          [nzSrc]="userInformation.avatar"
         ></nz-avatar>
-        <h4>michael</h4>
+        <h4>{{userInformation.username}}</h4>
       </div>
     </div>
   </div>
@@ -19,8 +19,8 @@
     <h4>Total: 12GB</h4>
 
     <div class="items">
-      <app-object *ngFor="let item of forLoop"></app-object>
+      <app-object *ngFor="let item of serializedDataList"></app-object>
     </div>
-    <nz-pagination [nzPageIndex]="1" [nzPageSize]="25" [nzTotal]="50"></nz-pagination>
+    <nz-pagination *ngIf="paginationData.totalItems === 0" [(nzPageIndex)]="paginationData.index" [nzPageSize]="12" [nzTotal]="paginationData.totalItems"></nz-pagination>
   </div>
 </div>

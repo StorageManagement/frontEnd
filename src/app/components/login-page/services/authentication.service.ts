@@ -1,17 +1,30 @@
 import { Injectable } from '@angular/core';
 import { LoginFormDataI } from '../login-page.component';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { LoadingService } from '../../loading/services/loading.service';
+
 export interface LoginFormResponse {
   refresh: string;
   access: string;
+  username: string;
+  avatar: string;
+}
+
+export interface UserInformation {
+  username: string;
+  avatar: string;
 }
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  public tokens: Subject<LoginFormResponse> = new Subject<LoginFormResponse>();
+  public tokens: BehaviorSubject<Partial<LoginFormResponse>> =
+    new BehaviorSubject<Partial<LoginFormResponse>>({});
+
+  public userInformation: BehaviorSubject<UserInformation> =
+    new BehaviorSubject<UserInformation>({ username: '', avatar: '' });
+
   public isAuthenticated: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   constructor(
