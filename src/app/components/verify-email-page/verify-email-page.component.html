@@ -1,9 +1,21 @@
 <div class="container">
-<app-logo ></app-logo>
+  <app-logo></app-logo>
   <div class="verify-email-container">
-  <h1 *ngIf="!urlChange" @titleAnimation>Check your email</h1>
-    <img *ngIf="!urlChange" @descriptionAnimation src="assets/images/Illustration%20(1).svg" alt="image1" />
-    <p *ngIf="!urlChange" @descriptionAnimation >We've sent an email to <a>{{email}}</a> to verify your account.</p>
-    <app-button *ngIf="!urlChange" @buttonAnimation [buttonProperties]='submitButtonProperties' (click)="onLoginClicked()"></app-button>
+    <h1 *ngIf="!urlChange" @titleAnimation>Check your email</h1>
+    <img
+      *ngIf="!urlChange"
+      @descriptionAnimation
+      src="assets/images/Illustration%20(1).svg"
+      alt="image1"
+    />
+    <p *ngIf="!urlChange" @descriptionAnimation>
+      We've sent an email to <a>{{ email }}</a> to verify your account.
+    </p>
+    <app-button
+      *ngIf="!urlChange"
+      @buttonAnimation
+      [buttonProperties]="submitButtonProperties"
+      (click)="onLoginClicked()"
+    ></app-button>
   </div>
 </div>
