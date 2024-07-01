@@ -1,27 +1,24 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonComponent } from '../../shared_components/button/button.component';
 import { ButtonPropertiesI } from '../../shared_components/button/models/button-properties';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
 import { NzDividerComponent } from 'ng-zorro-antd/divider';
 import {
   DashboardApiService,
+  GetUsersResponseI,
+  Permissions,
   Serialized_data,
 } from '../services/dashboard-api.service';
 import { LogoChangerPipe } from './pipes/logo-changer.pipe';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 import { FormsModule } from '@angular/forms';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { SearchBoxComponent } from '../../shared_components/search-box/search-box.component';
 import { LoadingService } from '../../loading/services/loading.service';
+import { AuthenticationService } from '../../login-page/services/authentication.service';
 
-export interface UserItem {
-  name: string;
-  imageUrl: string;
-  checked: boolean;
-  email: string;
-}
 @Component({
   selector: 'app-object',
   standalone: true,
@@ -36,6 +33,7 @@ export interface UserItem {
     NgForOf,
     CheckboxComponent,
     SearchBoxComponent,
+    NgIf,
   ],
   templateUrl: './object.component.html',
   styleUrl: './object.component.scss',
@@ -46,8 +44,13 @@ export class ObjectComponent {
     name: '',
     size: '',
     date: '',
+    owner: '',
     extension: '',
   };
+
+  @Output()
+  public onItemDeleted: EventEmitter<void> = new EventEmitter<void>();
+
   protected optionsButtonProperties: ButtonPropertiesI = {
     type: 'text',
     icon: {
@@ -98,62 +101,13 @@ export class ObjectComponent {
     },
   };
 
-  protected usersItems: UserItem[] = [
-    {
-      name: 'artaz',
-      checked: false,
-      imageUrl:
-        'https://saatsheni.com/storage/4a4da2041c057327aa7287ae5e78c2b6/Card-thumbanil-copy.webp',
-      email: 'noobazi1212@gmail.com',
-    },
-    {
-      name: 'ali',
-      imageUrl:
-        'https://saatsheni.com/storage/4a4da2041c057327aa7287ae5e78c2b6/Card-thumbanil-copy.webp',
-      checked: false,
-      email: 'noobazi1212@gmail.com',
-    },
-    {
-      name: 'ali',
-      imageUrl:
-        'https://saatsheni.com/storage/4a4da2041c057327aa7287ae5e78c2b6/Card-thumbanil-copy.webp',
-      checked: false,
-      email: 'noobazi1212@gmail.com',
-    },
-    {
-      name: 'ali',
-      imageUrl:
-        'https://saatsheni.com/storage/4a4da2041c057327aa7287ae5e78c2b6/Card-thumbanil-copy.webp',
-      checked: false,
-      email: 'noobazi1212@gmail.com',
-    },
-    {
-      name: 'ali',
-      imageUrl:
-        'https://saatsheni.com/storage/4a4da2041c057327aa7287ae5e78c2b6/Card-thumbanil-copy.webp',
-      checked: false,
-      email: 'noobazi1212@gmail.com',
-    },
-    {
-      name: 'ali',
-      imageUrl:
-        'https://saatsheni.com/storage/4a4da2041c057327aa7287ae5e78c2b6/Card-thumbanil-copy.webp',
-      checked: false,
-      email: 'noobazi1212@gmail.com',
-    },
-    {
-      name: 'ali',
-      imageUrl:
-        'https://saatsheni.com/storage/4a4da2041c057327aa7287ae5e78c2b6/Card-thumbanil-copy.webp',
-      checked: false,
-      email: 'noobazi1212@gmail.com',
-    },
-  ];
+  protected usersItems: GetUsersResponseI[] = [];
   visible: boolean = false;
 
   constructor(
     private dashboardApiService: DashboardApiService,
     private loadingService: LoadingService,
+    protected authenticationService: AuthenticationService,
   ) {}
 
   clickMe(): void {
@@ -167,7 +121,14 @@ export class ObjectComponent {
   isVisible = false;
 
   showModal(): void {
-    this.isVisible = true;
+    this.dashboardApiService
+      .getUsersData({
+        object_name: this.serialized_data.name,
+      })
+      .subscribe((response) => {
+        this.usersItems = response;
+        this.isVisible = true;
+      });
   }
 
   handleOk(): void {
@@ -176,7 +137,6 @@ export class ObjectComponent {
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 
@@ -198,5 +158,48 @@ export class ObjectComponent {
         document.querySelector('.download-link')?.remove();
         this.loadingService.hide();
       });
+  }
+
+  protected onDeleteButtonClicked() {
+    this.loadingService.show();
+    this.dashboardApiService
+      .deleteData({
+        object_name: this.serialized_data.name,
+      })
+      .subscribe((response) => {
+        if (response.detail === 'Object deleted successfully') {
+          this.onItemDeleted.emit();
+        }
+      });
+  }
+
+  protected onContinueButtonClicked() {
+    const permissions: Permissions[] = [];
+    this.usersItems.forEach((userData) => {
+      permissions.push({
+        user: userData.user,
+        allowed: userData.has_access,
+      });
+    });
+
+    this.dashboardApiService
+      .changeUsersPermission({
+        object_name: this.serialized_data.name,
+        permissions: permissions,
+      })
+      .subscribe((response) => {
+        if (response.detail === 'Permissions changed successfully.') {
+          console.log('success');
+          this.isVisible = false;
+        }
+      });
+  }
+
+  protected onCheckboxChanged(value: boolean, item: GetUsersResponseI) {
+    if (value) {
+      item.has_access = 'true';
+    } else {
+      item.has_access = 'false';
+    }
   }
 }

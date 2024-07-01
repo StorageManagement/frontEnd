@@ -4,7 +4,13 @@
     <app-search-box></app-search-box>
 
     <div class="right-side">
-      <input id="file_to_upload" (change)="onFileChange($event)" type="file"   name="file" />
+      <div class="input-container">
+        <input id="file_to_upload" (change)="onFileChange($event)" type="file" class="input" name="file" />
+        <div class="content">
+          <app-icon [iconProperties]="uploadIcon"></app-icon>
+          upload
+        </div>
+      </div>
 
       <!--      <app-button [buttonProperties]="uploadButtonProperties"></app-button>-->
       <div class="avatar">
@@ -21,7 +27,7 @@
     <h4>Total: {{userInformation.total_volume}}</h4>
 
     <div class="items">
-      <app-object [serialized_data]="item" *ngFor="let item of serializedDataList"></app-object>
+      <app-object [serialized_data]="item" *ngFor="let item of serializedDataList" (onItemDeleted)="onItemDeleted(item)"></app-object>
     </div>
     <nz-pagination *ngIf="paginationData.totalItems !== 0" [(nzPageIndex)]="paginationData.index" [nzPageSize]="12" [nzTotal]="paginationData.totalItems"></nz-pagination>
   </div>

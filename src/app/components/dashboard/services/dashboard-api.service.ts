@@ -33,6 +33,7 @@ export type Serialized_data = {
   name: string;
   size: string;
   date: string;
+  owner: string;
   extension: string;
 };
 
@@ -43,6 +44,39 @@ export interface ObjectsResponseI {
 
 export interface ObjectsRequestI {
   pagination: string;
+}
+
+export interface DeleteRequestI {
+  object_name: string;
+}
+
+export interface DeleteResponseI {
+  detail: string;
+}
+
+export interface GetUsersRequestI {
+  object_name: string;
+}
+
+export interface GetUsersResponseI {
+  user: string;
+  email: string;
+  avatar: string;
+  has_access: string;
+}
+
+export interface Permissions {
+  user: string;
+  allowed: string;
+}
+
+export interface ChangeUsersRequestI {
+  object_name: string;
+  permissions: Permissions[];
+}
+
+export interface ChangeUsersResponseI {
+  detail: string;
 }
 @Injectable({
   providedIn: 'root',
@@ -93,6 +127,42 @@ export class DashboardApiService {
     });
     return this.http.post<DownloadResponseDataI>(
       'http://localhost:8000/api/storage/download/',
+      requestData,
+      { headers },
+    );
+  }
+
+  public deleteData(requestData: DeleteRequestI) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${tokenGetter()}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<DeleteResponseI>(
+      'http://localhost:8000/api/storage/delete/',
+      requestData,
+      { headers },
+    );
+  }
+
+  public getUsersData(requestData: GetUsersRequestI) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${tokenGetter()}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<GetUsersResponseI[]>(
+      'http://localhost:8000/api/storage/users/',
+      requestData,
+      { headers },
+    );
+  }
+
+  public changeUsersPermission(requestData: ChangeUsersRequestI) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${tokenGetter()}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<ChangeUsersResponseI>(
+      'http://localhost:8000/api/storage/permissions/',
       requestData,
       { headers },
     );

@@ -78,13 +78,9 @@ export class DashboardComponent implements OnInit {
     },
   };
 
-  protected uploadButtonProperties: ButtonPropertiesI = {
-    type: 'primary',
-    text: 'Upload',
-    color: 'var(--white-color)',
-    icon: {
-      class: 'icon-Upload',
-    },
+  protected uploadIcon: IconPropertiesI = {
+    class: 'icon-Upload',
+    color: '#fff',
   };
 
   protected selectedFile?: File;
@@ -193,5 +189,15 @@ export class DashboardComponent implements OnInit {
     } else {
       this.selectedFile = undefined;
     }
+  }
+
+  protected onItemDeleted(item: Serialized_data): void {
+    this.serializedDataList = this.serializedDataList.filter(
+      (serializedData) => {
+        return serializedData.name !== item.name;
+      },
+    );
+    this.userInformation.total_volume -= Number(item.size);
+    this.loadingService.hide();
   }
 }

@@ -1,8 +1,11 @@
 <div class="container">
   <img [src]="serialized_data.extension | logoChanger" alt="figma" />
   <div class="information">
-    <h3>{{serialized_data.name}}</h3>
-    <h5>{{serialized_data.size}} - {{serialized_data.date.slice(0,serialized_data.date.indexOf('.'))}}</h5>
+    <h3>{{ serialized_data.name }}</h3>
+    <h5>
+      {{ serialized_data.size }} -
+      {{ serialized_data.date.slice(0, serialized_data.date.indexOf(".")) }}
+    </h5>
   </div>
   <app-button
     [buttonProperties]="optionsButtonProperties"
@@ -18,23 +21,65 @@
 </div>
 <ng-template #contentTemplate>
   <div class="template-container">
-    <app-button [buttonProperties]="shareButtonProperties" (click)="showModal()"></app-button>
-    <nz-divider></nz-divider>
-    <app-button [buttonProperties]="downloadButtonProperties" (click)="onDownloadObjectClicked()"></app-button>
-    <nz-divider></nz-divider>
-    <app-button [buttonProperties]="deleteButtonProperties"></app-button>
+    <app-button
+      *ngIf="
+        authenticationService.userInformation.getValue().username ===
+        serialized_data.owner
+      "
+      [buttonProperties]="shareButtonProperties"
+      (click)="showModal()"
+    ></app-button>
+    <nz-divider
+      *ngIf="
+        authenticationService.userInformation.getValue().username ===
+        serialized_data.owner
+      "
+    ></nz-divider>
+    <app-button
+      [buttonProperties]="downloadButtonProperties"
+      (click)="onDownloadObjectClicked()"
+    ></app-button>
+    <nz-divider
+      *ngIf="
+        authenticationService.userInformation.getValue().username ===
+        serialized_data.owner
+      "
+    ></nz-divider>
+    <app-button
+      *ngIf="
+        authenticationService.userInformation.getValue().username ===
+        serialized_data.owner
+      "
+      [buttonProperties]="deleteButtonProperties"
+      (click)="onDeleteButtonClicked()"
+    ></app-button>
   </div>
 </ng-template>
 
-<nz-modal [(nzVisible)]="isVisible" [nzWidth]="350" nzTitle="Share" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-  <ng-container *nzModalContent >
-<div class="content-container">    <app-search-box></app-search-box>
-  <div class="users-container">
-    <app-checkbox [userItem]="item" *ngFor="let item of usersItems"></app-checkbox>
-  </div></div>
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzWidth]="350"
+  nzTitle="Share"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-container *nzModalContent>
+    <div class="content-container">
+      <app-search-box></app-search-box>
+      <div class="users-container">
+        <app-checkbox
+          *ngFor="let item of usersItems"
+          [userItem]="{
+            user: item.user,
+            avatar: item.avatar,
+            has_access: item.has_access === 'true',
+            email: item.email,
+          }"
+          (onCheckboxChanged)="onCheckboxChanged($event,item)"
+        ></app-checkbox>
+      </div>
+    </div>
   </ng-container>
   <ng-container *nzModalFooter>
-    <app-button [buttonProperties]="submitShareButtonProperties"></app-button>
+    <app-button [buttonProperties]="submitShareButtonProperties" (click)="onContinueButtonClicked()"></app-button>
   </ng-container>
 </nz-modal>
-
