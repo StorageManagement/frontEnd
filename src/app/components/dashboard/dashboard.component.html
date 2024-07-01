@@ -19,7 +19,7 @@
     <h4>Total: 12GB</h4>
 
     <div class="items">
-      <app-object *ngFor="let item of serializedDataList"></app-object>
+      <app-object [serialized_data]="item" *ngFor="let item of serializedDataList"></app-object>
     </div>
     <nz-pagination *ngIf="paginationData.totalItems === 0" [(nzPageIndex)]="paginationData.index" [nzPageSize]="12" [nzTotal]="paginationData.totalItems"></nz-pagination>
   </div>

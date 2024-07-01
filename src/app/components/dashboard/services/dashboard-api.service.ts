@@ -6,7 +6,7 @@ import { tokenGetter } from '../../../app.config';
 export type Serialized_data = {
   name: string;
   size: string;
-  date: Date;
+  date: string;
   extension: string;
 };
 
@@ -24,7 +24,6 @@ export interface ObjectsRequestI {
 export class DashboardApiService {
   constructor(
     private http: HttpClient,
-    private authentication: AuthenticationService,
   ) {}
 
   public getObjects(requestData: ObjectsRequestI) {

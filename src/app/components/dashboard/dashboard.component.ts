@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit {
         pagination: '1',
       })
       .subscribe((items) => {
-        console.log(items);
+        console.log(items)
         this.paginationData.totalItems = Number(items.total_objects_number);
         this.serializedDataList = items.serialized_data;
         this.loadingService.hide();

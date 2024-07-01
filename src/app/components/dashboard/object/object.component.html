@@ -1,8 +1,8 @@
 <div class="container">
-  <img src="assets/images/Figma.svg" alt="figma" />
+  <img [src]="serialized_data.extension | logoChanger" alt="figma" />
   <div class="information">
-    <h3>App School.fig</h3>
-    <h5>10 GB - 10:09pm, 10 Oct</h5>
+    <h3>App {{serialized_data.name}}.{{serialized_data.extension}}</h3>
+    <h5>{{serialized_data.size}} - {{serialized_data.date.slice(0,serialized_data.date.indexOf('.'))}}</h5>
   </div>
   <app-button
     [buttonProperties]="optionsButtonProperties"
@@ -11,7 +11,7 @@
     [(nzPopoverVisible)]="visible"
     [nzPopoverContent]="contentTemplate"
     (click)="clickMe()"
-    nzPopoverTitle="App School.fig"
+    [nzPopoverTitle]="'app '+serialized_data.name+ '.' + serialized_data.extension"
     (nzPopoverVisibleChange)="change($event)"
     nzPopoverTrigger="click"
   ></app-button>

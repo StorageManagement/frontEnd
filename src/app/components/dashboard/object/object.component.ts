@@ -1,17 +1,26 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { ButtonComponent } from '../../shared_components/button/button.component';
 import { ButtonPropertiesI } from '../../shared_components/button/models/button-properties';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
 import { NzDividerComponent } from 'ng-zorro-antd/divider';
+import {Serialized_data} from "../services/dashboard-api.service";
+import {LogoChangerPipe} from "./pipes/logo-changer.pipe";
 
 @Component({
   selector: 'app-object',
   standalone: true,
-  imports: [ButtonComponent, NzPopoverDirective, NzDividerComponent],
+  imports: [ButtonComponent, NzPopoverDirective, NzDividerComponent, LogoChangerPipe],
   templateUrl: './object.component.html',
   styleUrl: './object.component.scss',
 })
 export class ObjectComponent {
+  @Input()
+  public serialized_data:Serialized_data = {
+    name: '',
+    size: '',
+    date: '',
+    extension: ''
+  }
   protected optionsButtonProperties: ButtonPropertiesI = {
     type: 'text',
     icon: {
@@ -57,6 +66,6 @@ export class ObjectComponent {
   }
 
   change(value: boolean): void {
-    console.log(value);
+    console.log(this.serialized_data)
   }
 }
