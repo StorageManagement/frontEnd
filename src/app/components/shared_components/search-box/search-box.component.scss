@@ -37,24 +37,11 @@
     }
   }
 
-  .search_button {
-    border: none;
-    background-color: hsl(220, 30%, 96%);
-    margin-top: 0.1em;
-    padding-right: 1rem;
+  .search_icon {
+    height: 1.5rem;
+    width: 1.5rem;
 
-    &:hover {
-      cursor: pointer;
-    }
-
-    .search_icon {
-      height: 1.5rem;
-      width: 1.5rem;
-      fill: hsl(0, 0%, 71%);
-    }
+    margin-right: 1rem;
+    fill: hsl(0, 0%, 71%);
   }
-}
-
-.search_input:focus + .search_button {
-  background-color: hsl(0, 6%, 94%);
 }
