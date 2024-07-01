@@ -1,5 +1,5 @@
 <div class="search">
-  <input type="text" class="search_input" placeholder="Search">
+  <input [(ngModel)]="value" (ngModelChange)="valueChange.emit($event)" type="text" class="search_input" placeholder="Search">
   <button class="search_button">
     <svg class="search_icon" aria-hidden="true" viewBox="0 0 24 24">
       <g>

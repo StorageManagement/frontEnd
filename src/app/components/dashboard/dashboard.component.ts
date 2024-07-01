@@ -5,7 +5,6 @@ import {
 } from '../shared_components/icon/icon.component';
 import { SearchBoxComponent } from '../shared_components/search-box/search-box.component';
 import { ButtonComponent } from '../shared_components/button/button.component';
-import { ButtonPropertiesI } from '../shared_components/button/models/button-properties';
 import { NzAvatarComponent } from 'ng-zorro-antd/avatar';
 import { ObjectComponent } from './object/object.component';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -96,7 +95,10 @@ export class DashboardComponent implements OnInit {
     total_volume: 0,
   };
 
+  protected searchValue: string = '';
+
   protected serializedDataList: Serialized_data[] = [];
+  protected enrichedSerializedDataList: Serialized_data[] = [];
   constructor(
     private readonly authentication: AuthenticationService,
     private readonly loadingService: LoadingService,
@@ -118,9 +120,9 @@ export class DashboardComponent implements OnInit {
         pagination: '1',
       })
       .subscribe((items) => {
-        console.log(items);
         this.paginationData.totalItems = Number(items.total_objects_number);
         this.serializedDataList = items.serialized_data;
+        this.enrichedSerializedDataList = this.serializedDataList;
         this.loadingService.hide();
       });
   }
@@ -172,6 +174,8 @@ export class DashboardComponent implements OnInit {
                         .subscribe((objectsResponse) => {
                           this.serializedDataList =
                             objectsResponse.serialized_data;
+                          this.enrichedSerializedDataList =
+                            this.serializedDataList;
                           this.paginationData.totalItems = Number(
                             objectsResponse.total_objects_number,
                           );
@@ -197,7 +201,34 @@ export class DashboardComponent implements OnInit {
         return serializedData.name !== item.name;
       },
     );
+    this.enrichedSerializedDataList = this.serializedDataList;
     this.userInformation.total_volume -= Number(item.size);
     this.loadingService.hide();
+  }
+
+  protected onSearchValueChanged(value: string): void {
+    if (value === '') {
+      this.enrichedSerializedDataList = this.serializedDataList;
+    } else {
+      this.enrichedSerializedDataList = this.serializedDataList.filter(
+        (data) => {
+          return data.name.toLowerCase().startsWith(value.toLowerCase());
+        },
+      );
+    }
+  }
+
+  protected onPageIndexChanged(index: number) {
+    this.loadingService.show();
+    this.dashboardApiService
+      .getObjects({
+        pagination: index.toString(),
+      })
+      .subscribe((items) => {
+        this.paginationData.totalItems = Number(items.total_objects_number);
+        this.serializedDataList = items.serialized_data;
+        this.enrichedSerializedDataList = this.serializedDataList;
+        this.loadingService.hide();
+      });
   }
 }

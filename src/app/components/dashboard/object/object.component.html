@@ -64,10 +64,10 @@
 >
   <ng-container *nzModalContent>
     <div class="content-container">
-      <app-search-box></app-search-box>
+      <app-search-box [(value)]="searchValue" (valueChange)="onSearchValueChanged($event)"></app-search-box>
       <div class="users-container">
         <app-checkbox
-          *ngFor="let item of usersItems"
+          *ngFor="let item of enrichedUsersItems"
           [userItem]="{
             user: item.user,
             avatar: item.avatar,

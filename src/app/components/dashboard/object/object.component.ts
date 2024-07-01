@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ButtonComponent } from '../../shared_components/button/button.component';
 import { ButtonPropertiesI } from '../../shared_components/button/models/button-properties';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
@@ -101,7 +101,12 @@ export class ObjectComponent {
     },
   };
 
+  protected isVisible: boolean = false;
+
   protected usersItems: GetUsersResponseI[] = [];
+  protected enrichedUsersItems: GetUsersResponseI[] = [];
+
+  protected searchValue: string = '';
   visible: boolean = false;
 
   constructor(
@@ -118,8 +123,6 @@ export class ObjectComponent {
     console.log(this.serialized_data);
   }
 
-  isVisible = false;
-
   showModal(): void {
     this.dashboardApiService
       .getUsersData({
@@ -127,13 +130,9 @@ export class ObjectComponent {
       })
       .subscribe((response) => {
         this.usersItems = response;
+        this.enrichedUsersItems = this.usersItems;
         this.isVisible = true;
       });
-  }
-
-  handleOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
   }
 
   handleCancel(): void {
@@ -200,6 +199,16 @@ export class ObjectComponent {
       item.has_access = 'true';
     } else {
       item.has_access = 'false';
+    }
+  }
+
+  protected onSearchValueChanged(value: string): void {
+    if (value === '') {
+      this.enrichedUsersItems = this.usersItems;
+    } else {
+      this.enrichedUsersItems = this.usersItems.filter((item) => {
+        return item.user.toLowerCase().startsWith(value.toLowerCase());
+      });
     }
   }
 }
