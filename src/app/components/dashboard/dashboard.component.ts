@@ -18,8 +18,12 @@ import {
 import { LoadingService } from '../loading/services/loading.service';
 import {
   DashboardApiService,
+  RequestUploadDataI,
   Serialized_data,
 } from './services/dashboard-api.service';
+import { Subject } from 'rxjs';
+
+declare var XMLHttpRequest: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -83,12 +87,18 @@ export class DashboardComponent implements OnInit {
     },
   };
 
+  protected selectedFile?: File;
+
   protected paginationData = {
     index: 1,
     totalItems: -1,
   };
 
-  protected userInformation: UserInformation = { avatar: '', username: '' };
+  protected userInformation: UserInformation = {
+    avatar: '',
+    username: '',
+    total_volume: 0,
+  };
 
   protected serializedDataList: Serialized_data[] = [];
   constructor(
@@ -102,17 +112,86 @@ export class DashboardComponent implements OnInit {
       this.authentication.userInformation.getValue().username;
     this.userInformation.avatar =
       this.authentication.userInformation.getValue().avatar;
-    console.log(this.authentication.userInformation.getValue().avatar);
+
+    this.userInformation.total_volume =
+      this.authentication.userInformation.getValue().total_volume;
+
     this.loadingService.show();
     this.dashboardApiService
       .getObjects({
         pagination: '1',
       })
       .subscribe((items) => {
-        console.log(items)
+        console.log(items);
         this.paginationData.totalItems = Number(items.total_objects_number);
         this.serializedDataList = items.serialized_data;
         this.loadingService.hide();
       });
+  }
+
+  onFileChange(event: Event) {
+    if ((event.target as any).files && (event.target as any).files.length) {
+      this.selectedFile = (event.target as any).files[0];
+      const requestData: RequestUploadDataI = {
+        object_name: this.selectedFile?.name ?? '',
+      };
+      this.loadingService.show();
+      this.dashboardApiService
+        .getUploadData(requestData)
+        .subscribe(async (response) => {
+          const formData = new FormData();
+          formData.append('key', response.fields.key);
+          formData.append('AWSAccessKeyId', response.fields.AWSAccessKeyId);
+          formData.append('policy', response.fields.policy);
+          formData.append('signature', response.fields.signature);
+          if (this.selectedFile) {
+            formData.append('file', this.selectedFile);
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', response.url);
+            let responseFetched: Subject<boolean> = new Subject<boolean>();
+            responseFetched.next(false);
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 204) {
+                  responseFetched.next(true);
+                } else {
+                  console.error('Error:', xhr.statusText);
+                }
+              }
+            };
+            xhr.send(formData);
+            responseFetched.subscribe((value) => {
+              if (value) {
+                this.dashboardApiService
+                  .sendPostUploadData({
+                    object_name: (event.target as any).files[0].name,
+                    size: (event.target as any).files[0].size,
+                  })
+                  .subscribe((response) => {
+                    if (response.detail == 'Changes submitted to database.') {
+                      this.dashboardApiService
+                        .getObjects({
+                          pagination: this.paginationData.index.toString(),
+                        })
+                        .subscribe((objectsResponse) => {
+                          this.serializedDataList =
+                            objectsResponse.serialized_data;
+                          this.paginationData.totalItems = Number(
+                            objectsResponse.total_objects_number,
+                          );
+                          this.userInformation.total_volume += (
+                            event.target as any
+                          ).files[0].size;
+                        });
+                    }
+                  });
+                this.loadingService.hide();
+              }
+            });
+          }
+        });
+    } else {
+      this.selectedFile = undefined;
+    }
   }
 }

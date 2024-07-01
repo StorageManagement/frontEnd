@@ -117,6 +117,7 @@ export class LoginPageComponent {
           this.authentication.userInformation.next({
             username: res.username,
             avatar: res.avatar,
+            total_volume: res.total_volume
           });
           this.authentication.isAuthenticated.next(true);
         }

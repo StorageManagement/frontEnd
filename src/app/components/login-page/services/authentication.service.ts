@@ -9,11 +9,13 @@ export interface LoginFormResponse {
   access: string;
   username: string;
   avatar: string;
+  total_volume: number
 }
 
 export interface UserInformation {
   username: string;
   avatar: string;
+  total_volume: number
 }
 @Injectable({
   providedIn: 'root',
@@ -23,7 +25,7 @@ export class AuthenticationService {
     new BehaviorSubject<Partial<LoginFormResponse>>({});
 
   public userInformation: BehaviorSubject<UserInformation> =
-    new BehaviorSubject<UserInformation>({ username: '', avatar: '' });
+    new BehaviorSubject<UserInformation>({ username: '', avatar: '',total_volume: 0 });
 
   public isAuthenticated: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
