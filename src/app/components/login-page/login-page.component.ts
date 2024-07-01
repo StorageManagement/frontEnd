@@ -109,9 +109,15 @@ export class LoginPageComponent {
       .authenticate(this.loginFormData)
       .subscribe(async (res) => {
         if (res.access && res.refresh) {
+          localStorage.setItem('access_token', res.access);
           this.authentication.tokens.next({
             refresh: res.refresh,
             access: res.access,
+          });
+          this.authentication.userInformation.next({
+            username: res.username,
+            avatar: res.avatar,
+            total_volume: res.total_volume
           });
           this.authentication.isAuthenticated.next(true);
         }

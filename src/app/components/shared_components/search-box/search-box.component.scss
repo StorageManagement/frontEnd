@@ -4,6 +4,8 @@
   justify-content: space-between;
   text-align: center;
 
+  width: 100%;
+
   .search_input {
     font-family: inherit;
     font-size: 1.5rem;
@@ -12,7 +14,7 @@
     color: hsl(0, 0%, 15%);
     padding: 0.7rem 1rem;
     border-radius: 30px;
-    width: 30rem;
+    width: 100%;
     transition: all ease-in-out 0.5s;
     margin-right: -2.5rem;
 
@@ -39,6 +41,7 @@
     border: none;
     background-color: hsl(220, 30%, 96%);
     margin-top: 0.1em;
+    padding-right: 1rem;
 
     &:hover {
       cursor: pointer;

@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+
+  width: 100%;
+  height: min-content;
+
+  padding-inline: 1rem;
+
+  .information-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    img {
+      width: 3rem;
+      height: 3rem;
+
+      border-radius: 100%;
+      overflow: hidden;
+    }
+
+    .information {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      h2 {
+        margin: 0;
+      }
+
+    }
+  }
+}
+nz-divider {
+  padding: 0;
+  margin: 0;
+}

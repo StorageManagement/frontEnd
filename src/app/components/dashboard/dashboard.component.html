@@ -1,26 +1,53 @@
 <div class="container">
   <div @headerAnimation class="header">
     <app-icon [iconProperties]="logoIcon"></app-icon>
-    <app-search-box></app-search-box>
+    <app-search-box
+      [(value)]="searchValue"
+      (valueChange)="onSearchValueChanged($event)"
+    ></app-search-box>
 
     <div class="right-side">
-      <app-button [buttonProperties]="uploadButtonProperties"></app-button>
+      <div class="input-container">
+        <input
+          id="file_to_upload"
+          (change)="onFileChange($event)"
+          type="file"
+          class="input"
+          name="file"
+        />
+        <div class="content">
+          <app-icon [iconProperties]="uploadIcon"></app-icon>
+          upload
+        </div>
+      </div>
       <div class="avatar">
         <nz-avatar
           nzShape="circle"
-          nzSrc="assets/images/Avatar.svg"
+          [nzSrc]="userInformation.avatar"
         ></nz-avatar>
-        <h4>michael</h4>
+        <h4>{{ userInformation.username }}</h4>
       </div>
     </div>
   </div>
   <div @contentAnimation class="content">
-    <h1>Objects</h1>
-    <h4>Total: 12GB</h4>
+    <div class="information">
+      <h1>Objects</h1>
+      <h4>Total: {{ userInformation.total_volume + " bytes" }}</h4>
+    </div>
 
     <div class="items">
-      <app-object *ngFor="let item of forLoop"></app-object>
+      <app-object
+        [serialized_data]="item"
+        *ngFor="let item of enrichedSerializedDataList"
+        (onItemDeleted)="onItemDeleted(item)"
+      ></app-object>
     </div>
-    <nz-pagination [nzPageIndex]="1" [nzPageSize]="25" [nzTotal]="50"></nz-pagination>
+    <nz-pagination
+      *ngIf="paginationData.totalItems !== 0"
+      [(nzPageIndex)]="paginationData.index"
+      (nzPageIndexChange)="onPageIndexChanged($event)"
+      [nzPageSize]="12"
+      [nzTotal]="paginationData.totalItems"
+    ></nz-pagination>
   </div>
 </div>

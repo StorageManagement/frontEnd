@@ -1,0 +1,15 @@
+<div class="container">
+  <input
+    type="checkbox"
+    [(ngModel)]="userItem.has_access"
+    (ngModelChange)="onCheckboxChanged.emit($event)"
+  />
+  <div class="information-container">
+    <img [src]="userItem.avatar" alt="" />
+    <div class="information">
+      <h2>{{ userItem.user }}</h2>
+      <h3>{{ userItem.email }}</h3>
+    </div>
+  </div>
+</div>
+<nz-divider></nz-divider>
