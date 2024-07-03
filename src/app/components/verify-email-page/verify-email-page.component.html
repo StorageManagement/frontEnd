@@ -1,14 +1,15 @@
 <div class="container">
-  <app-logo></app-logo>
+  <app-logo data-testid="logo"></app-logo>
   <div class="verify-email-container">
-    <h1 *ngIf="!urlChange" @titleAnimation>Check your email</h1>
+    <h1 *ngIf="!urlChange" @titleAnimation data-testid="header">Check your email</h1>
     <img
       *ngIf="!urlChange"
       @descriptionAnimation
       src="assets/images/Illustration%20(1).svg"
       alt="image1"
+      data-testid="img"
     />
-    <p *ngIf="!urlChange" @descriptionAnimation>
+    <p *ngIf="!urlChange" @descriptionAnimation data-testid="descriptionText">
       We've sent an email to <a>{{ email }}</a> to verify your account.
     </p>
     <app-button

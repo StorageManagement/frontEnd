@@ -1,10 +1,10 @@
 <div class="container">
-  <app-logo></app-logo>
+  <app-logo data-testid="logo"></app-logo>
   <div class="create-account-container">
     <div *ngIf="!urlChange" class="description" @welcomeAnimation>
       <h1>Create Account</h1>
     </div>
-    <div *ngIf="!urlChange" class="inputs" @inputAnimation>
+    <div *ngIf="!urlChange" class="inputs" @inputAnimation data-testid="inputs">
       <app-text-input
         [textInputProperties]="usernameInputProperties"
         [(value)]="formValues.username"
@@ -16,17 +16,19 @@
       <app-text-input
         [textInputProperties]="passwordInputProperties"
         [(value)]="formValues.password"
+        data-testid="password"
       ></app-text-input>
       <app-text-input
         [textInputProperties]="confirmPasswordInputProperties"
         [(value)]="formValues.confirmPassword"
+        data-testid="confirmPassword"
       ></app-text-input>
     </div>
     <div *ngIf="!urlChange" class="buttons" @buttonAnimation>
-      <app-button [buttonProperties]="submitButtonProperties" (click)="onSubmitClicked()"></app-button>
+      <app-button [buttonProperties]="submitButtonProperties" (click)="onSubmitClicked()" data-testid="submitButton"></app-button>
       <h4>Already have an account? <a (click)="onLoginClicked()">Login</a></h4>
     </div>
-    <div *ngIf="isError" @errorAnimation class="error">
+    <div *ngIf="isError" @errorAnimation class="error" data-testid="error">
       <img src="assets/images/error.svg" alt="error">
       Passwords do not match</div>
   </div>

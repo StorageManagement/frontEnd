@@ -8,12 +8,17 @@ describe('CheckboxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckboxComponent]
-    })
-    .compileComponents();
-    
+      imports: [CheckboxComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CheckboxComponent);
     component = fixture.componentInstance;
+    component.userItem = {
+      avatar: '',
+      email: '',
+      user: '',
+      has_access: false,
+    };
     fixture.detectChanges();
   });
 
