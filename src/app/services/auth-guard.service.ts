@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { AuthenticationService } from '../components/login-page/services/authentication.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGaurdService {
+export class AuthGuardService {
   constructor(
     private router: Router,
     private authService: AuthenticationService,

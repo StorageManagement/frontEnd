@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../shared_components/button/button.component';
-import {
-  IconComponent,
-  IconPropertiesI,
-} from '../shared_components/icon/icon.component';
+import { IconComponent } from '../shared_components/icon/icon.component';
 import {
   InputComponent,
   TextInputPropertiesI,
@@ -12,11 +9,11 @@ import { ButtonPropertiesI } from '../shared_components/button/models/button-pro
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { LogoComponent } from '../shared_components/logo/logo.component';
 import { CreateAccountApiService } from './services/create-account-api.service';
 import { VerifyEmailService } from '../verify-email-page/services/verify-email.service';
 import { LoadingService } from '../loading/services/loading.service';
+
 export interface CreateAccountFormDataI {
   username: string;
   email: string;
@@ -138,7 +135,7 @@ export class CreateAccountComponent {
   }
 
   protected async onSubmitClicked(): Promise<void> {
-    this.isError = this.formValues.password !== this.formValues.confirmPassword;
+    this.isError = this.formValues.password === this.formValues.confirmPassword;
     if (!this.isError) {
       this.createAccountApiService
         .createAccount(this.formValues)
