@@ -11,9 +11,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { LoadingService } from '../loading/services/loading.service';
 import { CreateAccountApiService } from './services/create-account-api.service';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { Component } from '@angular/core';
+import { MockService } from 'ng-mocks';
+import { loadingError } from '../../app.component';
 
 @Component({
   selector: 'app-random',
@@ -23,13 +25,14 @@ class DummyComponent {}
 describe('CreateAccountComponent', () => {
   let component: CreateAccountComponent;
   let fixture: ComponentFixture<CreateAccountComponent>;
-  let mockLoadingService: jasmine.SpyObj<LoadingService>;
+  let mockLoadingService: any;
   let mockCreateAccountApiService: jasmine.SpyObj<CreateAccountApiService>;
+
   beforeEach(async () => {
-    mockLoadingService = jasmine.createSpyObj<LoadingService>(
-      ['hide', 'show'],
-      [],
-    );
+    mockLoadingService = MockService(LoadingService, {
+      hide() {},
+      show() {},
+    });
 
     mockCreateAccountApiService = jasmine.createSpyObj<CreateAccountApiService>(
       ['createAccount'],
@@ -57,6 +60,8 @@ describe('CreateAccountComponent', () => {
 
     fixture = TestBed.createComponent(CreateAccountComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
+    (window as any).loadingError = new Subject();
   });
 
   it('should create', () => {
@@ -140,6 +145,9 @@ describe('CreateAccountComponent', () => {
         detail: 'Verification email sent.',
       }),
     );
+
+    const spy = spyOn(mockLoadingService, 'hide');
+
     // Act
     fixture.detectChanges();
     fixture.debugElement
@@ -155,7 +163,7 @@ describe('CreateAccountComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    expect(mockLoadingService.hide).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('hide method of loadingService SHOULD not call WHEN submitButton is clicked and has no error and response is not valid', () => {
@@ -165,6 +173,7 @@ describe('CreateAccountComponent', () => {
         detail: 'some random error',
       }),
     );
+    const spy = spyOn(mockLoadingService, 'hide');
     // Act
     fixture.detectChanges();
     fixture.debugElement
@@ -180,7 +189,7 @@ describe('CreateAccountComponent', () => {
     fixture.detectChanges();
 
     // Assert
-    expect(mockLoadingService.hide).not.toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('items SHOULD destroy WHEN submitButton is clicked and has no error and response is valid', fakeAsync(() => {
