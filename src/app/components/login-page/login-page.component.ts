@@ -12,6 +12,7 @@ import { NgIf } from '@angular/common';
 import { LogoComponent } from '../shared_components/logo/logo.component';
 import { AuthenticationService } from './services/authentication.service';
 import { LoadingService } from '../loading/services/loading.service';
+import { loadingError } from '../../app.component';
 
 export interface LoginFormDataI {
   username_email: string;
@@ -117,11 +118,18 @@ export class LoginPageComponent {
           this.authentication.userInformation.next({
             username: res.username,
             avatar: res.avatar,
-            total_volume: res.total_volume
+            total_volume: res.total_volume,
           });
           this.authentication.isAuthenticated.next(true);
         }
       });
+
+    loadingError.subscribe((value) => {
+      if (value) {
+        this.loadingService.hide();
+      }
+    });
+
     this.authentication.isAuthenticated.subscribe(async (value) => {
       this.loadingService.hide();
       if (value) {

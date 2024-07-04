@@ -44,24 +44,22 @@
           overflow: hidden;
 
           background-color: var(--primary-color);
+          cursor: pointer !important;
 
           .input {
             position: absolute;
             opacity: 0;
             width: 100%;
             height: 100%;
-            cursor: pointer !important;
 
             z-index: 1;
+            cursor: pointer !important;
 
           }
 
           .content {
             position: absolute;
             z-index: 0;
-
-            width: 100%;
-            height: 100%;
 
             top: 50%;
             left: 50%;
@@ -72,6 +70,7 @@
             justify-content: space-around;
             align-items: center;
             gap: 1rem;
+            cursor: pointer !important;
 
 
             background-color: var(--primary-color);

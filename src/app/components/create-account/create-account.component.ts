@@ -10,9 +10,15 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { LogoComponent } from '../shared_components/logo/logo.component';
-import { CreateAccountApiService } from './services/create-account-api.service';
+import {
+  CreateAccountApiService,
+  CreateAccountResponseI,
+} from './services/create-account-api.service';
 import { VerifyEmailService } from '../verify-email-page/services/verify-email.service';
 import { LoadingService } from '../loading/services/loading.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, of, pipe, throwError } from 'rxjs';
+import { loadingError } from '../../app.component';
 
 export interface CreateAccountFormDataI {
   username: string;
@@ -140,7 +146,10 @@ export class CreateAccountComponent {
       this.createAccountApiService
         .createAccount(this.formValues)
         .subscribe(async (response) => {
-          if (response.detail === 'Verification email sent.') {
+          if (
+            (response as CreateAccountResponseI).detail ===
+            'Verification email sent.'
+          ) {
             this.loadingService.hide();
             this.urlChange = true;
             this.verifyEmailService.email = this.formValues.email;
@@ -148,6 +157,12 @@ export class CreateAccountComponent {
             await this.router.navigateByUrl('/verifyEmail');
           }
         });
+
+      loadingError.subscribe((value: boolean): void => {
+        if (value) {
+          this.loadingService.hide();
+        }
+      });
     }
   }
 }

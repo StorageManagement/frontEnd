@@ -203,6 +203,7 @@ export class DashboardComponent implements OnInit {
     );
     this.enrichedSerializedDataList = this.serializedDataList;
     this.userInformation.total_volume -= Number(item.size);
+    this.paginationData.totalItems -= 1;
     this.loadingService.hide();
   }
 

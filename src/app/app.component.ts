@@ -4,6 +4,8 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { LoadingService } from './components/loading/services/loading.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Subject } from 'rxjs';
+export var loadingError: Subject<boolean>;
 
 @Component({
   selector: 'app-root',
@@ -27,7 +29,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class AppComponent implements OnInit {
   title = 'storage-management';
   isShow: boolean = false;
-  constructor(public loadingService: LoadingService) {}
+  constructor(public loadingService: LoadingService) {
+    loadingError = new Subject<boolean>();
+  }
 
   ngOnInit(): void {
     this.loadingService.isShow.subscribe((value) => {

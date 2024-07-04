@@ -4,7 +4,7 @@
     <h3>{{ serialized_data.name }}</h3>
     <h5>
       {{ serialized_data.size }} -
-      {{ serialized_data.date.slice(0, serialized_data.date.indexOf(".")) }}
+      {{ serialized_data.date.slice(0, serialized_data.date.indexOf(".")).replace('T', ' ') }}
     </h5>
   </div>
   <app-button
