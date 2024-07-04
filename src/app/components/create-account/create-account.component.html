@@ -28,7 +28,7 @@
       <app-button [buttonProperties]="submitButtonProperties" (click)="onSubmitClicked()" data-testid="submitButton"></app-button>
       <h4>Already have an account? <a (click)="onLoginClicked()">Login</a></h4>
     </div>
-    <div *ngIf="isError" @errorAnimation class="error" data-testid="error">
+    <div *ngIf="!isError" @errorAnimation class="error" data-testid="error">
       <img src="assets/images/error.svg" alt="error">
       Passwords do not match</div>
   </div>

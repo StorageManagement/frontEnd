@@ -141,7 +141,7 @@ export class CreateAccountComponent {
   }
 
   protected async onSubmitClicked(): Promise<void> {
-    this.isError = this.formValues.password === this.formValues.confirmPassword;
+    this.isError = this.formValues.password !== this.formValues.confirmPassword;
     if (!this.isError) {
       this.createAccountApiService
         .createAccount(this.formValues)
